@@ -2,7 +2,9 @@ package main;
 
 import java.util.Scanner;
 
+import monsters.GiantWurm;
 import monsters.IMonster;
+import monsters.Skeleton;
 
 public class Game {
 
@@ -75,8 +77,17 @@ public class Game {
 		 * based on randomness
 		 */
 		if (RandomHelper.getBigChance() == true) {
+			IMonster monster;
+			int mAttack = (player.getLevel()+2);
+			int mHp = (player.getLevel()+6);
+			int mExp = ((player.getLevel()*2)+35);
+			
 			if (RandomHelper.get50Chance() == true ) {
-				
+				monster = new GiantWurm(mAttack, mHp, mExp);
+				battle(monster);
+			} else {
+				monster = new Skeleton(mAttack, mHp, mExp);
+				battle(monster);
 			}
 		} else {
 			System.out.println("You see nothing but swaying grass all around you...");			
@@ -90,6 +101,19 @@ public class Game {
 	 * @param monster - the monster to fight
 	 */
 	private void battle(IMonster monster) {
+		System.out.println("You encountered a " + monster.getName());
+		
+		while (monster.isDead() == false) {
+			pause();
+			System.out.println("You hit the monster");
+			monster.takeDamage(player.attack());
+			pause();
+			System.out.println("Monster hits you");
+			player.takeDamage(monster.attack());
+		}
+		
+		System.out.println("Fight ended");
+		player.giveExp(monster.getExp());
 		/* TODO
 		 * simulate a battle.
 		 * Must also handle all side effects, like death, leveling up to 10 and so on 

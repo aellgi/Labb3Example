@@ -17,7 +17,7 @@ public class RandomHelper {
 	public static boolean get50Chance() {		
 		Integer event = rng.nextInt(9);
 		
-		if (event.intValue() == 4) {
+		if (event.intValue() <= 4) {
 		return false;									
 		} else {
 			return true;
